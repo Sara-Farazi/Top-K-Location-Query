@@ -8,7 +8,7 @@ import time
 import math
 from collections import defaultdict
 from cell import Point, Coordinates, Cell
-# from summary import Summary, Counter
+from summary import Summary, Counter
 from nltk.corpus import stopwords
 from scipy.optimize import minimize_scalar
 from geopy.distance import great_circle
@@ -97,28 +97,28 @@ def get_product_prob(center1, center2, c1, c2, a1, a2):
 	# pdb.set_trace()
 	return temp[:5]
 
-with open('rare_multi.txt') as f:
+with open('../New/rare_multi.txt') as f:
 	for line in f:
 		l = line.replace('\n', '')
 		multi_qr.append(l)
 		parts = l.split(' ')
 		all_terms.append(parts[0])
 		all_terms.append(parts[1])
-with open('med_multi.txt') as f:
+with open('../New/med_multi.txt') as f:
 	for line in f:
 		l = line.replace('\n', '')
 		multi_qm.append(l)
 		parts = l.split(' ')
 		all_terms.append(parts[0])
 		all_terms.append(parts[1])
-with open('frequent_multi.txt') as f:
+with open('../New/frequent_multi.txt') as f:
 	for line in f:
 		l = line.replace('\n', '')
 		multi_qf.append(l)
 		parts = l.split(' ')
 		all_terms.append(parts[0])
 		all_terms.append(parts[1])
-with open('tooFreq_multi.txt') as f:
+with open('../New/tooFreq_multi.txt') as f:
 	for line in f:
 		l = line.replace('\n', '')
 		multi_qt.append(l)
@@ -127,7 +127,7 @@ with open('tooFreq_multi.txt') as f:
 		all_terms.append(parts[1])
 
 
-with open('../all-multis-base.txt') as f:
+with open('../10multi.txt') as f:
 	for line in f:
 		parts = line.split("\t")
 		term = parts[0]
@@ -135,7 +135,7 @@ with open('../all-multis-base.txt') as f:
 		for i in range(0, int(len(parts)/3)):
 			multis[term].append((parts[i*3 + 1]))
 
-with open('all_multis.txt') as f:
+with open('../New/real_multis.txt') as f:
 	for line in f:
 		parts = line.split("\t")
 		term = parts[0]
@@ -252,7 +252,7 @@ print(allc)
 print(cnt/allc)
 
 
-# fcs = {}
+fcs = {}
 
 # with open('../all_multis_fc.txt') as f:
 # 	for line in f:

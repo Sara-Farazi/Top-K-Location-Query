@@ -10,7 +10,7 @@ from collections import defaultdict
 from cell import Point, Coordinates, Cell
 from summary import Summary, Counter
 from nltk.corpus import stopwords
-from scipy.optimize import minimize_scalar
+from scipy.optimize import minimize
 from geopy.distance import great_circle
 from pymongo import MongoClient
 
@@ -29,12 +29,13 @@ stop = ['d', 'wouldn', 'to', 'those', 'while', 'whom', 'only', 'few', 'after', '
 # RING_SIZE = 200
 map_cells = {}
 same_distances = {}
-file = 'ring50.txt'
+file = 'flickr_ring.txt'
 
 client = MongoClient('localhost', 27017)
-db = client.BiggerRings04
+db = client.BiggerRings6
 saved_rings = db.rings
 
+tests = []
 def build_map():
 	for i in range(-90, 91):
 		for j in range(-180, 181):
@@ -74,22 +75,32 @@ def get_dist(loc1, loc2):
 	# res = math.sqrt(math.pow((x1 - x2), 2) + math.pow((y1 - y2), 2 ))
 	p1 = (x1, y1)
 	p2 = (x2, y2)
-	res = great_circle(p1, p2).kilometers
-	return res
+	d1 = math.pow((x1 - x2),2)
+	d2 = math.pow((y1 - y2),2)
+	d = math.sqrt(d1 + d2)
+	# res = great_circle(p1, p2).kilometers
+	return d
 
 
 def find_events():	
+	# with open('data/alpha-test.txt') as ff:
+	# 	for line in ff:
+	# 		l = line.replace('\n', '')
+	# 		tests.append(l)
+
 	with open(file) as f:
 		tot_time = 0
 		lines = f.read().splitlines()
 		for line in lines:
-			# start_time = time.time()
+			start_time = time.time()
 			parts = line.split('\t\t')
 			term = parts[0]
 			total = 0
 			# print(term)
 
 			# print(parts)
+			# if term in tests:
+
 			for p in parts[1:len(parts)-1]:
 				# print(total)
 				pParts = p.split('\t')
@@ -102,7 +113,8 @@ def find_events():
 				continue
 			# if term == 'indianapolis':
 			# 	continue
-			for p in parts[1:2]:
+			# answers = {}
+			for p in parts[1: 2]:
 				pParts = p.split('\t')
 				# print (pParts)
 				center = pParts[0]
@@ -110,7 +122,7 @@ def find_events():
 				error = int(pParts[2])
 				rings = {}
 				# ind = int(len(pParts)/3)
-				for i in range(3,10):
+				for i in range(3,13):
 					pp = pParts[i].split(" ")
 					rings[float(pp[0])] = float(pp[1])
 					# total += float(pp[1])
@@ -146,7 +158,8 @@ def find_events():
 				# print('total:{}\tfound:{}'.format(total,cnt))
 
 
-				def f(x):
+				def f(params):
+					c, x = params
 					result = 0	
 					# pdb.set_trace()	
 					# + 100!
@@ -164,23 +177,26 @@ def find_events():
 						saved[r] = saved[r] - f
 						# 100, 102.4, 256.0, 640.0, 1600.0, 4000.0, 10000.0
 						# pdb.set_trace()
-						di = 0
-						if ring == 10000.0:
-							di = 7000
-						if ring == 4000.0:
-							di = 2800
-						if ring == 1600:
-							di = 1120
-						if ring == 640.0:
-							di = 498
-						if ring == 256.0:
-							di = 179
-						if ring == 102.4:
-							di = 101
-						if ring == 100.0:
-							di = 50
+						# di = 0
+						# if ring == 10000.0:
+						# 	di = 7000
+						# if ring == 4000.0:
+						# 	di = 2800
+						# if ring == 1600:
+						# 	di = 1120
+						# if ring == 640.0:
+						# 	di = 498
+						# if ring == 256.0:
+						# 	di = 179
+						# if ring == 102.4:
+						# 	di = 101
+						# if ring == 100.0:
+						# 	di = 50
 						# pdb.set_trace()
-						result = result + (f * math.log(focus * ( (di) **(-x))))
+						# di = ring
+						di = ring/100
+						result = result + (f * math.log(c * ( (di) **(-x))))
+					result += (freq * math.log(c * ( (1) **(-x))))
 						# print(result)
 				
 					for k, val in saved.items():
@@ -193,26 +209,28 @@ def find_events():
 						d = 0
 						dd = float(kr)
 						# pdb.set_trace()
-						if dd == 10000.0:
-							d = 7000
-						if dd == 4000.0:
-							d = 2800
-						if dd == 1600:
-							d = 1120
-						if dd == 640.0:
-							d = 498
-						if dd == 256.0:
-							d = 179
-						if dd == 102.4:
-							d = 101
-						if dd == 100:
-							d = 50
-
+						# if dd == 10000.0:
+						# 	d = 7000
+						# if dd == 4000.0:
+						# 	d = 2800
+						# if dd == 1600:
+						# 	d = 1120
+						# if dd == 640.0:
+						# 	d = 498
+						# if dd == 256.0:
+						# 	d = 179
+						# if dd == 102.4:
+						# 	d = 101
+						# if dd == 100:
+						# 	d = 50
+						# print(d)
 						# if float(kr) > 1000:
 						# print('{}\t{}'.format(k, val))
+						d = dd/100
 						if val > 0:
-							result = result + (val * (math.log(1 - (focus * ((dd **(-x)))))))
-						# print(result)
+							result = result + (val * (math.log(1 - (c * ((d **(-x)))))))
+						
+					# print(result)
 
 					
 
@@ -220,15 +238,32 @@ def find_events():
 
 
 				# print("--- %s seconds ---" % (time.time() - start_time))
-				res = minimize_scalar(f, bounds = (0,5), method = "bounded")
+				initial = [0.001, 0.01]
+				res = minimize(f, initial, bounds = [(0.001, 0.999), (0.01,5)])
 				# print("Done optimization")
 				
-				alpha = res.x
+				alpha = res.x[1]
+				C = res.x[0]
+				# answers[center] = (C, alpha)
 				# value.update({'alpha': alpha})
 				# print("{} --- {}".format(term, freq))
-				print('{}\t{}\t{}\t{}\t{}\t{}'. format(term, center, focus, alpha, total, error))
-		# 		tot_time += (time.time() - start_time)
-		# print(tot_time/len(lines))
+
+				print('{}\t{}\t{}\t{}\t{}\t{}'. format(term, center, C, alpha, total, error))
+				tot_time += (time.time() - start_time)
+	print(tot_time/len(lines))
+		# print(answers)
+		# for k, v in answers.items():
+		# 	max_val = 0
+		# 	center = 0
+		# 	result = 0
+		# 	p = [v[0], v[1]]
+		# 	val = f(p)
+		# 	if val > max_val:
+		# 		max_val = val
+		# 		center = k
+		# 		result = answers[k]
+
+		# print('{}\t{}\t{}\t{}'.format(term,center, result[0], result[1]))
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import re
 import sys
 import math
 from cell import Point, Coordinates, Cell
-# from summary import Summary, Counter
+from summary import Summary, Counter
 from nltk.corpus import stopwords
 from scipy.optimize import minimize_scalar
 from geopy.distance import great_circle
@@ -25,7 +25,7 @@ stop = ['d', 'wouldn', 'to', 'those', 'while', 'whom', 'only', 'few', 'after', '
 # RING_SIZE = 200
 map_cells = {}
 same_distances = {}
-file = '../all-multis-ring-q.txt'
+file = 'multi_allq.txt'
 
 client = MongoClient('localhost', 27017)
 db = client.BiggerRings03
@@ -144,9 +144,9 @@ def find_events(m):
 		center = parts[1]
 		focus = float(parts[2])
 		alpha = float(parts[3])
-		# total = float(parts[4])
+		total = float(parts[4])
 		# print('{}\t{}\t{}\t{}'.format(center, focus, alpha, total))
-		return (center, focus, alpha)
+		return (center, focus, alpha, total)
 	else:
 		return 0
 
@@ -183,16 +183,14 @@ if __name__ == "__main__":
 				p_joint = pj
 				if pj == p1:
 					joint_cell = t1[0]
-					# tot = t1[3]
+					tot = t1[3]
 				if pj == p2:
 					joint_cell = t2[0]
-					# tot = t2[3]
+					tot = t2[3]
 
-		print('{}\t{}\t{}'.format(item, joint_cell, p_joint))
+		print('{}\t{}\t{}\t{}'.format(item, joint_cell, p_joint, tot))
 
 		# results = get_product_prob(t1[0], t2[0], t1[1], t2[1], t1[2], t2[2])
-		# print('{}\t{}\t{}'.format(item, results[0][0], results[0][1]))
-
 		# print('{}\t{}\t{}\t{}'.format(item, results[0][0], results[0][1], results[0][1] * min(t1[3], t2[3])))
 		
 
