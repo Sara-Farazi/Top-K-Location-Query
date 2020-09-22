@@ -1,4 +1,7 @@
 __author__="Sara Farazi"
+
+# Kleinberg's method for finding the probabilistic model of a term geographical distribution.
+
 import re
 import sys
 import pdb
@@ -14,8 +17,7 @@ from scipy.optimize import minimize
 from geopy.distance import great_circle
 
 
-
-
+# Change this file path for a new dataset:
 file = 'base-134.txt'
 all_terms = {}
 map_cells = {}
@@ -38,7 +40,7 @@ def build_map():
 
 
 
-
+# get distance between 2 points on the map (eucledian and great circle)
 def get_dist(loc1, loc2):
 	parts1 = loc1.split('/')
 	parts2 = loc2.split('/')
@@ -46,7 +48,6 @@ def get_dist(loc1, loc2):
 	x2 = float(parts2[0]) + 0.5
 	y1 = float(parts1[1]) + 0.5
 	y2 = float(parts2[1]) + 0.5
-	# res = math.sqrt(math.pow((x1 - x2), 2) + math.pow((y1 - y2), 2 ))
 	p1 = (x1, y1)
 	p2 = (x2, y2)
 	# res = great_circle(p1, p2).kilometers
@@ -56,7 +57,7 @@ def get_dist(loc1, loc2):
 	return d
 
 
-
+# Calculates C and alpha for terms (events)
 def find_events():
 
 	# with open('random_set_events_2.txt') as file1:
@@ -108,13 +109,6 @@ def find_events():
 
 		for key, value in all_terms.items():
 
-			# for item in centers[key]:
-			# 	answers = {}
-				# if key == 'binoculars':
-				# if value['center'][1] == 1:
-				# 	continue
-				# start_time = time.time()
-
 
 			def f(params):
 				c,x = params
@@ -128,16 +122,6 @@ def find_events():
 					if dist == 0:
 						dist = 1
 
-
-					# if dist in distances1:
-					# 	distances1[dist].add(val)
-					# else:
-					# 	distances1[dist] = set([val])
-
-				# for dis, locs in distances1.items():
-				# 	cnt = len(locs)
-				# 	result = result + (cnt * math.log(value['center'][1] * ( dis **(-x)))) 
-					# print(value)
 					result = result + (val * math.log(c * ( dist **(-x))) )
 				
 				used_locations = [k for k, val in value.items()]
@@ -147,14 +131,7 @@ def find_events():
 						dist = get_dist(value['center'][0], k)
 						if dist == 0:
 							continue
-						# if dist in distances2:
-						# 	distances2[dist].add(k)
-						# else:
-						# 	distances2[dist] = set([k])
-
-				# for dis, locs in distances2.items():
-				# 	cnt = len(locs)
-				# 	result = result + (cnt * math.log(1 - (value['center'][1] * (dis**(-x)))))
+						
 						result = result + math.log(1 - (c * (dist**(-x))))
 				
 				# print(result)
@@ -170,20 +147,7 @@ def find_events():
 			# answers[item] = (C, alpha)
 			print('{}\t{}\t{}\t{}'. format(key, value['center'][0], C, alpha))
 
-			
-			# for k, v in answers.items():
-			# 	max_val = 0
-			# 	center = 0
-			# 	result = 0
-			# 	p = [v[0], v[1]]
-			# 	val = f(p)
-			# 	if val > max_val:
-			# 		max_val = val
-			# 		center = k
-			# 		result = answers[k]
-
-			# print('{}\t{}\t{}\t{}'.format(key, center, result[0], result[1]))
-			# print("--- %s seconds ---" % (time.time() - start_time))
+		
 			tot_time += (time.time() - start_time)
 			print((time.time() - start_time))
 		print(tot_time/len(all_terms))

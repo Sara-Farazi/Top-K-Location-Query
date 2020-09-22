@@ -1,6 +1,8 @@
 __author__="Sara Farazi"
 
 
+# Counter class: contains a cellID, count(frequency), error value and number of rings
+
 class Counter:
 	def __init__(self, cell_id, freq, err):
 		self.cell = cell_id
@@ -15,6 +17,7 @@ class Counter:
 			return "{}\t{}\t{}\t{}".format(self.cell, self.count, self.error, self.rings)
 
 
+# Term Summary class: Keeps track of the top K frequent counters for each term
 
 class Summary:
 	def __init__(self, k):
@@ -23,17 +26,17 @@ class Summary:
 		self.cnt = 0
 		self.total = 0
 
+
+	# Update the summary after seeing each new item (new cell that term appears in)
 	def update_summary(self, cell_id):
 		cells = []
 		for item in self.counters:
 			cells.append(item.cell)
 		if cell_id in cells:
-			for it in self.counters:
-				if it.cell == cell_id:
-					it.count += 1
+			for c in self.counters:
+				if c.cell == cell_id:
+					c.count += 1
 					return 
-			# ind = cells.index(cell_id)
-			# self.counters[ind].count += 1
 			
 
 		if len(self.counters) >= self.size:
@@ -48,7 +51,7 @@ class Summary:
 	
 		
 
-
+	# Returns the minimum counter
 	def find_min_index(self):
 		minimum = float('inf')
 		ind = -1
@@ -64,7 +67,6 @@ class Summary:
 		pass
 
 	def __str__(self):
-		
 		str_res = ""
 		for counter in self.counters: 
 			str_res += counter.__str__() + '\t'

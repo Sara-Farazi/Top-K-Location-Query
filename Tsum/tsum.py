@@ -7,7 +7,9 @@ from summary_base import Summary, Counter
 from nltk.corpus import stopwords
 from geopy.distance import great_circle
 
+# Change this file path for running on different datasets:
 file = "data/1mtweets.txt"
+
 map_cells = {}
 map_terms = {}
 term_locations = {}
@@ -40,7 +42,7 @@ def is_word(word):
             return False
     return True
     
-
+# Create a test set of incoming words:
 def find_terms():
     with open('data/alpha-test.txt') as f:
         lines = f.read().splitlines()
@@ -79,6 +81,7 @@ def find_terms():
     #         all_terms.append(parts[1])
 
 
+# Create a map of the world: Each cell size is 1 x 1 degree latitude and logitude
 
 def build_map():
     for i in range(-90, 91):
@@ -92,6 +95,8 @@ def build_map():
             new_cell = Cell(id, coordinates)
             map_cells.update({id : new_cell})
 
+
+# Read incoming terms with their locations and process earch term's summary:
 
 def stream_terms():
     tot_time = 0
@@ -133,7 +138,6 @@ def stream_terms():
                     #     term_locations[item].add(cell_id)
                     # else:
                     #     term_locations[item] = set([cell_id])
-
     
     
     for key, value in map_terms.items():

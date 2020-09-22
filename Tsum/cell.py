@@ -1,5 +1,8 @@
 __author__="Sara Farazi"
 
+
+# Defines a cell on the map with its four corner points 
+
 class Point:
     def __init__(self, x, y):
         self.x = x
