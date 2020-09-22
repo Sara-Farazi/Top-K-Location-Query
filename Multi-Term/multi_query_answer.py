@@ -84,12 +84,7 @@ def get_product_prob(center1, center2, c1, c2, a1, a2):
 		joint_p = p1 * p2
 		all_products[key] = joint_p
 
-	# max_p = 0
-	# res = ''
-	# for key, value in all_products.items():
-	# 	if value > max_p:
-	# 		max_p = value
-	# 		res = key
+
 	temp = sorted(all_products.items(), key=lambda x: x[1], reverse = True)
 	# pdb.set_trace()
 	return temp[:5]

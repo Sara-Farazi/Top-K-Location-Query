@@ -1,4 +1,7 @@
 __author__="Sara Farazi"
+
+# Fixed Summary experimenting for Ringsum
+
 import re
 import sys
 import pdb

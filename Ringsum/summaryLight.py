@@ -1,4 +1,7 @@
 __author__="Sara Farazi"
+
+# Light Summary experimenting for Ringsum
+
 import pdb
 import math
 from cell import Point, Coordinates, Cell

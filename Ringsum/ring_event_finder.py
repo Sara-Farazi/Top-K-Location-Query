@@ -1,3 +1,5 @@
+# Kleinberg's method of finding probabilistic geographic distribution for terms (events)
+
 import pdb
 import json
 import re
@@ -9,19 +11,9 @@ from cell import Point, Coordinates, Cell
 from scipy.optimize import minimize
 from geopy.distance import great_circle
 
-file = "data/flickr1m.txt"
 
-# tests = ['louvre', 'nosotros', 'florence', 'scots', 'bilbao', 'brussels', 'leipzig', 'trondheim', 'oisterwijk', 'marseille', 
-# 'shanghai', 'longwood', 'naperville', 'bali', 'chiang', 'stockholm', 'boulder', 'garda', 'noordwijkerhout', 'ann', 'elvert', 
-# 'hyde', 'access-public', 'elijah', 'wildsingapore', 'interactive', 'giants', 'heithabyr', 'documentalista.', 'cronista', 'pecados', 
-# 'indianapolis', 'valladolid', 'jersey', 'ascca', 'fototeca', 'd.c.', 'belgica', 'arbor.', 'auckland', 'geneva', 'kyoto', 'albuquerque', 
-# 'linz', 'virtual', 'bristol', 'historia', 'sacramento', 'monterey', 'dresden', 'austin', 'brugge', 'reykjavik', 'brooklyn', 'nashville', 
-# 'vienna', 'praha', 'arkansas', 'kanagawa', 'bmx', 'df', 'ottawa', 'sarthe', 'rotterdam', 'canberra', 'protocol', 'length', 'volviera', 
-# 'viene', 'moscow', 'bronx', 'dublin', 'halifax', 'madridejos.fotos.es', 'queens', 'raftwet', 'focal', 'esperanzas', 'mays', 'rva', 
-# 'osa', 'review', 'jewell', 'copenhagen', 'jakintza', 'crenshaw', 'sao', 'salzburg', 'agouti', 'madridejos', 'monica', 'waikiki', 
-# 'beijing', 'moore', 'whitewater', 'dasyprocta', 'borough', 'dallas', 'oaxaca', 'budapest']
-# 'newtown', 'paris', 'fighter', 'march', 'equipment', 'arrows', 'wasser', 'call', 'courant', 'meadow', 'balade', 'kirke', 'showcase', 
-# 'piemonte', 'detail', 'cup']
+# Input file path:
+file = "data/flickr1m.txt"
 
 
 stop = ['d', 'wouldn', 'to', 'those', 'while', 'whom', 'only', 'few', 'after', 'off', 'such', 'an', 'he', 'her', 'be', 'll', 

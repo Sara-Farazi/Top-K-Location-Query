@@ -11,7 +11,6 @@ from summary import Summary, Counter
 test_terms = {}
 
 
-
 def get_dist(loc1, loc2):
 	parts1 = loc1.split('/')
 	parts2 = loc2.split('/')

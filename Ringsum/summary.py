@@ -27,7 +27,7 @@ class Ring_Counter:
 
 
 
-
+# Rimgsum Summary class: Keeps track of the top K frequent counters in each ring in the summary.
 
 class Summary:
 	def __init__(self, k):
@@ -121,12 +121,6 @@ class Summary:
 
 
 	def find_remained_cells(self):
-		# d = 0
-		# for item in self.temp_sum:
-		# 	print(item)
-		# print("*****************************************************")
-		# for item in self.counters:
-		# 	print(item)
 		cnt = 0
 		cells = [c.cell for c in self.counters]
 		temps = self.temp_sum
@@ -139,21 +133,6 @@ class Summary:
 		self.temp_sum = []
 		for item in self.counters:
 			self.temp_sum.append(item.cell)
-
-		# print("*****************************************************")
-		# for item in self.temp_sum:
-		# 	print(item)
-		# self.temp_sum = self.counters
-		# # if len(self.counters) > 1:
-		# # 	if len(self.temp_sum) <= 1:
-		# # 		# d = 0
-		# # 		cnt = 1
-		# # 	elif self.sort()[0] != self.temp_sum[0]:
-		# # 		# d = self.get_dist(self.sort()[2].cell, self.temp_sum[2].cell)
-		# # 		cnt = 1
-		# # 	else:
-		# # 		cnt = 0
-		# # self.temp_sum = self.sort()
 
 		return cnt
 
@@ -170,7 +149,7 @@ class Summary:
 
 
 
-
+# Define ring sizes (intervals) - It can be different based on how many rings we want and what intervals we want:
 class Rings:
 	def __init__(self, term, k):
 		# self.RING_SIZE = 200 

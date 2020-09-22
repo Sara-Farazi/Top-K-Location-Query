@@ -1,4 +1,7 @@
 __author__="Sara Farazi"
+
+# Evaluate methods. Compare C and alpha from Tsum or Ringsum with the true value.
+
 import re
 import sys
 import pdb

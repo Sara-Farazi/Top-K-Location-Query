@@ -1,3 +1,5 @@
+# Find the ground truth values of C and alpha for events (terms)
+
 import pdb
 import json
 import re

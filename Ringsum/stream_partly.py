@@ -1,4 +1,5 @@
 __author__="Sara Farazi"
+
 import re
 import sys
 import pdb
@@ -76,9 +77,6 @@ def count_qterms():
 						counts[i] += 1
 
 
-
-
-
 def build_map():
 	for i in range(-90, 91):
 		for j in range(-180, 181):
@@ -104,7 +102,6 @@ def get_dist(loc1, loc2):
 	p2 = (x2, y2)
 	res = great_circle(p1, p2).kilometers
 	return res
-
 
 
 

@@ -1,4 +1,5 @@
 __author__="Sara Farazi"
+
 import pdb
 import time
 import math
@@ -9,6 +10,7 @@ from nltk.corpus import stopwords
 from geopy.distance import great_circle
 
 
+# Input file path:
 file = "data/1mtweets.txt"
 map_cells = {}
 map_terms = {}
@@ -30,7 +32,6 @@ stop = ['d', 'wouldn', 'to', 'those', 'while', 'whom', 'only', 'few', 'after', '
 	'were', 'for', 'm', 'in', 'out', 'these', 'is', 'my', 'shan', 'more', 'has', 'again', 'doesn', 'mightn', 'theirs', 'did', 
 	'don', 'over', 'she', 'you', 'so', 'our', 'yourself', 've', 'weren', 'which', 'do', 'that', 'most', 'ourselves', 'until', 
 	'your', 'herself', 'doing', 'all', 'of', 'nor', 'by', 'ain', 'being', 'hasn', 'other', 'itself', 's', 'both']
-
 
 
 def find_terms():
@@ -65,6 +66,7 @@ def find_terms():
 	# 		all_terms.append(parts[1])
 
 
+# Create test set
 def get_random_test_terms(num):
 	count = num
 	lines = set([])
@@ -119,6 +121,7 @@ def get_dist(loc1, loc2):
 
 
 
+# Read incoming terms and update each term's summary. Here the summary is from the Ringsum method.
 def stream_terms(k):
 	tot_time = 0
 	with open(file) as f:
